@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.Random;
 
 import robocode.AdvancedRobot;
+import robocode.HitByBulletEvent;
 import robocode.HitWallEvent;
 import robocode.ScannedRobotEvent;
 import robocode.WinEvent;
@@ -11,17 +12,16 @@ import robocode.util.Utils;
 
 public class VomitTornado extends AdvancedRobot {
 	
-	EnemyBot enemy;
+	Bot target;
 	double direction = -1;
 	int directionGettingOld;
 	double attackOrRetreat = -1;
 	double trailingDistance = 150;
 	double attentionSpan = 70;
-	double bulletDodgery = 0.005;
 	double speed = 50;
 	double margin = 50;
 	Random r;
-	double dodge = 0.95;
+	double dodge = 0.2;
 	
 	public void run() {
 		r = new Random();
@@ -36,23 +36,23 @@ public class VomitTornado extends AdvancedRobot {
 	}
 	
 	public void onScannedRobot(ScannedRobotEvent e) {
-		if(enemy == null)
-			enemy = EnemyBot.fromScannedRobotEvent(e);
+		if(target == null)
+			target = Bot.fromScannedRobotEvent(e);
 		
-		if(enemy.name != e.getName())
+		if(target.name != e.getName())
 			return; // We don't care.
 		
-		EnemyBot oldEnemy = enemy;
-		enemy = EnemyBot.fromScannedRobotEvent(e);
+		Bot oldEnemy = target;
+		target = Bot.fromScannedRobotEvent(e);
 		
-		if((directionGettingOld++ > 50 + (100 * r.nextDouble())) || (enemy.energy < oldEnemy.energy && r.nextDouble() < dodge)) // son of a bitch shot at me!
+		if(target.energy < oldEnemy.energy && r.nextDouble() < dodge) // son of a bitch shot at me!
 			reverseDirection();
 		
-		fireWhenReady(enemy);
+		fireWhenReady(target);
 		
 		
 		setTurnRadarRight(VomitMath.normalizeBearing(getHeading() - getRadarHeading() + e.getBearing()));
-		setTurnRight(VomitMath.normalizeBearing(e.getBearing() + 90 - angleOfAttack(enemy)));
+		setTurnRight(VomitMath.normalizeBearing(e.getBearing() + 90 - angleOfAttack(target)));
 		setAhead(speed * direction);
 		
 	}
@@ -60,6 +60,10 @@ public class VomitTornado extends AdvancedRobot {
 	public void onHitWall(HitWallEvent event) {
 		directionGettingOld = -100;
 		reverseDirection();
+	}
+	
+	public void onHitByBullet(HitByBulletEvent event) {
+		
 	}
 	
 	public void onWin(WinEvent event) {
@@ -71,7 +75,7 @@ public class VomitTornado extends AdvancedRobot {
 		directionGettingOld = 0;
 	}
 	
-	double angleOfAttack(EnemyBot e) {
+	double angleOfAttack(Bot e) {
 		double attackOrRetreat = (e.distance < trailingDistance) ? -1 : 1;
 		double width = getBattleFieldWidth();
 		double factor = (e.distance - trailingDistance) / width;
@@ -80,7 +84,7 @@ public class VomitTornado extends AdvancedRobot {
 		return Math.abs(angle) * direction * attackOrRetreat;
 	}
 	
-	void fireWhenReady(EnemyBot e) {
+	void fireWhenReady(Bot e) {
 		double firePower = Math.min(400 / e.distance, 3);
 		double absoluteBearing = getHeadingRadians() + e.bearingRadians;
 		setTurnGunRightRadians(getLeadGunTurnRadians(absoluteBearing, e.velocity, e.headingRadians));
@@ -95,13 +99,12 @@ public class VomitTornado extends AdvancedRobot {
 	double getLeadGunTurnRadians(double absoluteBearing, double enemeyVelocity, double enemyHeadingRadians) {
 		double whatsThisNumber = 13.0 + (3 *  r.nextDouble()); 
 		double gunHeading = absoluteBearing - getGunHeadingRadians();
-		//return Utils.normalRelativeAngle(gunHeading + (enemeyVelocity * Math.sin(enemyHeadingRadians - absoluteBearing) / whatsThisNumber));
 		return Utils.normalRelativeAngle(gunHeading + (enemeyVelocity * Math.sin(enemyHeadingRadians - absoluteBearing) / whatsThisNumber));
 	}
 	
 }
 
-class EnemyBot {
+class Bot {
 	public double bearingRadians;
 	public double headingRadians;
 	public double distance;
@@ -110,8 +113,8 @@ class EnemyBot {
 	public double heading;
 	public double velocity;
 	
-	static EnemyBot fromScannedRobotEvent(ScannedRobotEvent e) {
-		EnemyBot bot = new EnemyBot();
+	static Bot fromScannedRobotEvent(ScannedRobotEvent e) {
+		Bot bot = new Bot();
 		
 		bot.energy = e.getEnergy();
 		bot.velocity = e.getVelocity();
@@ -140,5 +143,6 @@ class VomitMath {
 		return Math.asin(8.0/(20 - (3 *Math.min(3,firePower))));
 	}
 }
+
 
 
