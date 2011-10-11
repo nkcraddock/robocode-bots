@@ -35,20 +35,6 @@ public class VomitTornado extends AdvancedRobot {
 		}
 	}
 	
-	private void reverseDirection() {
-		direction *= -1;
-		directionGettingOld = 0;
-	}
-	
-	private double angleOfAttack(EnemyBot e) {
-		double attackOrRetreat = (e.distance < trailingDistance) ? -1 : 1;
-		double width = getBattleFieldWidth();
-		double factor = (e.distance - trailingDistance) / width;
-		double maxDive = 60;
-		double angle = factor * 5 * maxDive;
-		return Math.abs(angle) * direction * attackOrRetreat;
-	}
-	
 	public void onScannedRobot(ScannedRobotEvent e) {
 		if(enemy == null)
 			enemy = EnemyBot.fromScannedRobotEvent(e);
@@ -80,7 +66,19 @@ public class VomitTornado extends AdvancedRobot {
 		turnLeft(360);
 	}
 	
+	void reverseDirection() {
+		direction *= -1;
+		directionGettingOld = 0;
+	}
 	
+	double angleOfAttack(EnemyBot e) {
+		double attackOrRetreat = (e.distance < trailingDistance) ? -1 : 1;
+		double width = getBattleFieldWidth();
+		double factor = (e.distance - trailingDistance) / width;
+		double maxDive = 60;
+		double angle = factor * 5 * maxDive;
+		return Math.abs(angle) * direction * attackOrRetreat;
+	}
 	
 	void fireWhenReady(EnemyBot e) {
 		double firePower = Math.min(400 / e.distance, 3);
@@ -97,6 +95,7 @@ public class VomitTornado extends AdvancedRobot {
 	double getLeadGunTurnRadians(double absoluteBearing, double enemeyVelocity, double enemyHeadingRadians) {
 		double whatsThisNumber = 13.0 + (3 *  r.nextDouble()); 
 		double gunHeading = absoluteBearing - getGunHeadingRadians();
+		//return Utils.normalRelativeAngle(gunHeading + (enemeyVelocity * Math.sin(enemyHeadingRadians - absoluteBearing) / whatsThisNumber));
 		return Utils.normalRelativeAngle(gunHeading + (enemeyVelocity * Math.sin(enemyHeadingRadians - absoluteBearing) / whatsThisNumber));
 	}
 	
