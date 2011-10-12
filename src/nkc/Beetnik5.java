@@ -4,34 +4,31 @@ import java.awt.Color;
 import java.util.Random;
 
 import robocode.AdvancedRobot;
-import robocode.HitByBulletEvent;
 import robocode.HitWallEvent;
+import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 import robocode.WinEvent;
 import robocode.util.Utils;
 
-public class VomitTornado extends AdvancedRobot {
+public class Beetnik5 extends AdvancedRobot {
 	
+	ISteering steering;
 	Bot target;
-	double direction = -1;
-	int directionGettingOld;
-	double attackOrRetreat = -1;
-	double trailingDistance = 150;
 	double attentionSpan = 70;
-	double speed = 50;
 	double margin = 50;
-	Random r;
-	double dodge = 0.2;
+	Random r = new Random();
+	double firingRange = 500;
+	
 	
 	public void run() {
-		r = new Random();
+		steering = new VomitSteering(this);
 		setColors(Color.green, Color.white, Color.red);
         setAdjustRadarForGunTurn(true);
         setAdjustGunForRobotTurn(true);
         setAdjustRadarForRobotTurn(true);
 
         while (true) {
-        	turnRadarLeft(20 * direction);
+        	turnRadarLeft(Double.POSITIVE_INFINITY);
 		}
 	}
 	
@@ -42,46 +39,26 @@ public class VomitTornado extends AdvancedRobot {
 		if(target.name != e.getName())
 			return; // We don't care.
 		
-		Bot oldEnemy = target;
+		//Bot oldEnemy = target;
 		target = Bot.fromScannedRobotEvent(e);
 		
-		if(target.energy < oldEnemy.energy && r.nextDouble() < dodge) // son of a bitch shot at me!
-			reverseDirection();
-		
+		steering.onScannedRobot(e, target);
 		fireWhenReady(target);
-		
-		
-		setTurnRadarRight(VomitMath.normalizeBearing(getHeading() - getRadarHeading() + e.getBearing()));
-		setTurnRight(VomitMath.normalizeBearing(e.getBearing() + 90 - angleOfAttack(target)));
-		setAhead(speed * direction);
-		
 	}
 	
-	public void onHitWall(HitWallEvent event) {
-		directionGettingOld = -100;
-		reverseDirection();
+	public void onHitWall(HitWallEvent e) {
+		steering.onHitWall(e);
 	}
-	
-	public void onHitByBullet(HitByBulletEvent event) {
-		
+
+	public void onRobotDeath(RobotDeathEvent e) {
+		if(target != null && target.name == e.getName())
+			target = null; // Our enemy is slain.
 	}
 	
 	public void onWin(WinEvent event) {
 		turnLeft(360);
 	}
 	
-	void reverseDirection() {
-		direction *= -1;
-		directionGettingOld = 0;
-	}
-	
-	double angleOfAttack(Bot e) {
-		double attackOrRetreat = (e.distance < trailingDistance) ? -1 : 1;
-		double width = getBattleFieldWidth();
-		double factor = ((e.distance - trailingDistance) / width) * 5;
-		double maxDive = 60;
-		return Math.abs(factor * maxDive) * direction * attackOrRetreat;
-	}
 	
 	void fireWhenReady(Bot e) {
 		double firePower = Math.min(400 / e.distance, 3);
@@ -92,7 +69,7 @@ public class VomitTornado extends AdvancedRobot {
 	}
 	
 	boolean inRange(double distance) {
-		return distance <= trailingDistance * 2.0;
+		return distance <= firingRange;
 	}
 
 	double getLeadGunTurnRadians(double absoluteBearing, double enemeyVelocity, double enemyHeadingRadians) {
@@ -100,9 +77,7 @@ public class VomitTornado extends AdvancedRobot {
 		double gunHeading = absoluteBearing - getGunHeadingRadians();
 		return Utils.normalRelativeAngle(gunHeading + (enemeyVelocity * Math.sin(enemyHeadingRadians - absoluteBearing) / whatsThisNumber));
 	}
-	
 }
-
 
 
 
