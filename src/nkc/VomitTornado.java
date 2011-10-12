@@ -16,24 +16,27 @@ public class VomitTornado extends AdvancedRobot {
 	Bot target;
 	
 	public void run() {
-		steering = new VomitSteering(this);
+		//steering = new VomitSteering(this);
+		steering = new BlueSteering(this);
 		gun = new VomitComet(this);
+		
 		setBodyColor(Color.black);
         setAdjustRadarForGunTurn(true);
         setAdjustGunForRobotTurn(true);
+        
         while (true) turnRadarLeft(Double.POSITIVE_INFINITY);
 	}
 	
 	public void onScannedRobot(ScannedRobotEvent e) {
-		if(target == null)
+		if(target == null) 
 			target = Bot.fromScannedRobotEvent(e);
 		
-		if(target.name != e.getName())
+		if(target.name != e.getName()) 
 			return; // We don't care.
 		
 		target = Bot.fromScannedRobotEvent(e);
 		steering.onScannedRobot(e, target);
-		//gun.onScannedRobot(e, target);
+		gun.onScannedRobot(e, target);
 	}
 	
 	public void onHitWall(HitWallEvent e) {

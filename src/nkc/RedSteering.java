@@ -7,7 +7,7 @@ import robocode.AdvancedRobot;
 import robocode.HitWallEvent;
 import robocode.ScannedRobotEvent;
 
-public class VomitSteering implements ISteering {
+public class RedSteering implements ISteering {
 	Random r = new Random();
 	AdvancedRobot robot;
 	double direction = -1;
@@ -20,7 +20,7 @@ public class VomitSteering implements ISteering {
 	Bot lastTarget;
 	double dodge = 0.2;
 	
-	public VomitSteering(AdvancedRobot r) {
+	public RedSteering(AdvancedRobot r) {
 		robot = r;
 		robot.setRadarColor(Color.red);
 	}

@@ -9,11 +9,11 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 
-public class ShittyGun extends Gun {
+public class RedGun extends Gun {
 	
-	public ShittyGun(AdvancedRobot r) {
+	public RedGun(AdvancedRobot r) {
 		super(r);
-		robot.setGunColor(Color.white);
+		robot.setGunColor(Color.red);
 	}
 
 

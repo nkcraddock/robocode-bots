@@ -26,4 +26,7 @@ class VomitTools {
 	static double absoluteBearing(Point2D source, Point2D target) {
 		return Math.atan2(target.getX() - source.getX(), target.getY() - source.getY());
 	}
+	
+	// Ninjad this from the wave surfing tutorial
+	
 }
