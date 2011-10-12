@@ -14,8 +14,6 @@ public class Beetnik5 extends AdvancedRobot {
 	IGun gun;
 	Bot target;
 	
-	
-	
 	public void run() {
 		steering = new VomitSteering(this);
 		gun = new ShittyGun(this);
@@ -41,7 +39,7 @@ public class Beetnik5 extends AdvancedRobot {
 		target = Bot.fromScannedRobotEvent(e);
 		
 		steering.onScannedRobot(e, target);
-		gun.fireWhenReady(target);
+		gun.onScannedRobot(e, target);
 	}
 	
 	public void onHitWall(HitWallEvent e) {
@@ -56,8 +54,6 @@ public class Beetnik5 extends AdvancedRobot {
 	public void onWin(WinEvent event) {
 		turnLeft(360);
 	}
-	
-	
 	
 }
 

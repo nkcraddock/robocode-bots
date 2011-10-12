@@ -19,11 +19,11 @@ public class ShittyGun implements IGun{
 		robot.setGunColor(Color.white);
 	}
 
-	public void onScannedRobot(ScannedRobotEvent e) {
-		
+	public void onScannedRobot(ScannedRobotEvent e, Bot target) {
+		fireWhenReady(target);
 	}
 
-	public void fireWhenReady(Bot target) {
+	void fireWhenReady(Bot target) {
 		double firePower = Math.min(400 / target.distance, 3);
 		double absoluteBearing = robot.getHeadingRadians() + target.bearingRadians;
 		robot.setTurnGunRightRadians(getLeadGunTurnRadians(absoluteBearing, target.velocity, target.headingRadians));
