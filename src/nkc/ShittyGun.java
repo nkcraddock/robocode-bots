@@ -3,22 +3,22 @@ package nkc;
 import java.awt.Color;
 import java.util.Random;
 
+
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 
-public class ShittyGun implements IGun{
+public class ShittyGun extends Gun {
 	
-	Random r = new Random();
-	double firingRange = 500;
-	AdvancedRobot robot;
-
 	public ShittyGun(AdvancedRobot r) {
-		robot = r;
+		super(r);
 		robot.setGunColor(Color.white);
 	}
 
+
+	Random r = new Random();
+	
 	public void onScannedRobot(ScannedRobotEvent e, Bot target) {
 		fireWhenReady(target);
 	}
@@ -31,9 +31,7 @@ public class ShittyGun implements IGun{
 			robot.fire(firePower);
 	}
 	
-	boolean inRange(double distance) {
-		return distance <= firingRange;
-	}
+
 
 	double getLeadGunTurnRadians(double absoluteBearing, double enemeyVelocity, double enemyHeadingRadians) {
 		double lol = 13.0 + (3 *  r.nextDouble()); 

@@ -2,6 +2,7 @@ package nkc;
 
 import java.awt.Color;
 
+
 import robocode.AdvancedRobot;
 import robocode.HitWallEvent;
 import robocode.RobotDeathEvent;
@@ -11,13 +12,13 @@ import robocode.WinEvent;
 public class VomitTornado extends AdvancedRobot {
 
 	ISteering steering;
-	IGun gun;
+	Gun gun;
 	Bot target;
 	
 	public void run() {
 		steering = new VomitSteering(this);
-		gun = new ShittyGun(this);
-		setBodyColor(Color.green);
+		gun = new VomitComet(this);
+		setBodyColor(Color.black);
         setAdjustRadarForGunTurn(true);
         setAdjustGunForRobotTurn(true);
         while (true) turnRadarLeft(Double.POSITIVE_INFINITY);
@@ -30,11 +31,9 @@ public class VomitTornado extends AdvancedRobot {
 		if(target.name != e.getName())
 			return; // We don't care.
 		
-		//Bot oldEnemy = target;
 		target = Bot.fromScannedRobotEvent(e);
-		
 		steering.onScannedRobot(e, target);
-		gun.onScannedRobot(e, target);
+		//gun.onScannedRobot(e, target);
 	}
 	
 	public void onHitWall(HitWallEvent e) {
@@ -49,8 +48,6 @@ public class VomitTornado extends AdvancedRobot {
 	public void onWin(WinEvent event) {
 		turnLeft(360);
 	}
-	
-	
 }
 
 

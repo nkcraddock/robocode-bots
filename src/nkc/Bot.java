@@ -2,7 +2,7 @@ package nkc;
 
 import robocode.ScannedRobotEvent;
 
-class Bot {
+public class Bot {
 	public double bearingRadians;
 	public double headingRadians;
 	public double distance;

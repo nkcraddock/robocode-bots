@@ -29,8 +29,8 @@ public class VomitSteering implements ISteering {
 		if(target != null && lastTarget != null && target.energy < lastTarget.energy && r.nextDouble() < dodge) // son of a bitch shot at me!
 			reverseDirection();
 		
-		robot.setTurnRadarRight(VomitMath.normalizeBearing(robot.getHeading() - robot.getRadarHeading() + e.getBearing()));
-		robot.setTurnRight(VomitMath.normalizeBearing(e.getBearing() + 90 - angleOfAttack(target)));
+		robot.setTurnRadarRight(VomitTools.normalizeBearing(robot.getHeading() - robot.getRadarHeading() + e.getBearing()));
+		robot.setTurnRight(VomitTools.normalizeBearing(e.getBearing() + 90 - angleOfAttack(target)));
 		robot.setAhead(speed * direction);
 		
 		lastTarget = target;
