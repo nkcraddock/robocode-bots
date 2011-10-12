@@ -1,28 +1,26 @@
 package nkc;
 
 import java.awt.Color;
-import java.util.Random;
 
 import robocode.AdvancedRobot;
 import robocode.HitWallEvent;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 import robocode.WinEvent;
-import robocode.util.Utils;
 
 public class Beetnik5 extends AdvancedRobot {
 	
 	ISteering steering;
+	IGun gun;
 	Bot target;
-	double attentionSpan = 70;
-	double margin = 50;
-	Random r = new Random();
-	double firingRange = 500;
+	
 	
 	
 	public void run() {
 		steering = new VomitSteering(this);
-		setColors(Color.green, Color.white, Color.red);
+		gun = new ShittyGun(this);
+		
+		setBodyColor(Color.green);
         setAdjustRadarForGunTurn(true);
         setAdjustGunForRobotTurn(true);
         setAdjustRadarForRobotTurn(true);
@@ -43,7 +41,7 @@ public class Beetnik5 extends AdvancedRobot {
 		target = Bot.fromScannedRobotEvent(e);
 		
 		steering.onScannedRobot(e, target);
-		fireWhenReady(target);
+		gun.fireWhenReady(target);
 	}
 	
 	public void onHitWall(HitWallEvent e) {
@@ -60,23 +58,7 @@ public class Beetnik5 extends AdvancedRobot {
 	}
 	
 	
-	void fireWhenReady(Bot e) {
-		double firePower = Math.min(400 / e.distance, 3);
-		double absoluteBearing = getHeadingRadians() + e.bearingRadians;
-		setTurnGunRightRadians(getLeadGunTurnRadians(absoluteBearing, e.velocity, e.headingRadians));
-		if (getGunHeat() == 0 && getGunTurnRemaining() < 10 && inRange(e.distance))
-			fire(firePower);
-	}
 	
-	boolean inRange(double distance) {
-		return distance <= firingRange;
-	}
-
-	double getLeadGunTurnRadians(double absoluteBearing, double enemeyVelocity, double enemyHeadingRadians) {
-		double whatsThisNumber = 13.0 + (3 *  r.nextDouble()); 
-		double gunHeading = absoluteBearing - getGunHeadingRadians();
-		return Utils.normalRelativeAngle(gunHeading + (enemeyVelocity * Math.sin(enemyHeadingRadians - absoluteBearing) / whatsThisNumber));
-	}
 }
 
 

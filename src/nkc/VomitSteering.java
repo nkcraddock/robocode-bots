@@ -1,5 +1,6 @@
 package nkc;
 
+import java.awt.Color;
 import java.util.Random;
 
 import robocode.AdvancedRobot;
@@ -21,15 +22,12 @@ public class VomitSteering implements ISteering {
 	
 	public VomitSteering(AdvancedRobot r) {
 		robot = r;
+		robot.setRadarColor(Color.red);
 	}
 	
 	public void onScannedRobot(ScannedRobotEvent e, Bot target) {
-		 
-		
 		if(target != null && lastTarget != null && target.energy < lastTarget.energy && r.nextDouble() < dodge) // son of a bitch shot at me!
 			reverseDirection();
-		
-		
 		
 		robot.setTurnRadarRight(VomitMath.normalizeBearing(robot.getHeading() - robot.getRadarHeading() + e.getBearing()));
 		robot.setTurnRight(VomitMath.normalizeBearing(e.getBearing() + 90 - angleOfAttack(target)));
