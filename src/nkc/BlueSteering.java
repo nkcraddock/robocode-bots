@@ -1,6 +1,9 @@
 package nkc;
 
 import java.awt.Color;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D.Double;
 import java.util.Random;
 
 import robocode.AdvancedRobot;
@@ -19,6 +22,7 @@ public class BlueSteering implements ISteering {
 	double trailingDistance = 150;
 	Bot lastTarget;
 	double dodge = 0.2;
+	Rectangle2D fieldRect = new Rectangle2D.Double(18, 18, battleFieldWidth-36, battleFieldHeight-36);
 	
 	public BlueSteering(AdvancedRobot r) {
 		robot = r;
@@ -30,12 +34,27 @@ public class BlueSteering implements ISteering {
 			reverseDirection();
 		
 		robot.setTurnRadarRight(VomitTools.normalizeBearing(robot.getHeading() - robot.getRadarHeading() + e.getBearing()));
-		double howMuchToTurn = VomitTools.normalizeBearing(e.getBearing() + 90 - angleOfAttack(target));
-		robot.setTurnRight(howMuchToTurn);
-		robot.setAhead(speed * direction);
+		Point2D location = new Point2D.Double(robot.getX(), robot.getY());
+		Point2D enemyLocation = VomitTools.project(location, e.getBearing(), e.getDistance());
+		//double absBearing = VomitTools.absoluteBearing(location, enemyLocation);
 		
+		//robot.setTurnRight(absBearing);
+			goTo(new Point2D.Double(100,100));
+		
+
 		lastTarget = target;
 	}
+	
+	void goTo(Point2D point) {
+		Point2D location = new Point2D.Double(robot.getX(), robot.getY());
+		double absoluteBearing = VomitTools.absoluteBearing(location, point) - robot.getHeadingRadians();
+		//System.out.println(absoluteBearing);
+		//System.out.println("(" + location.getX() + "," + location.getY() + ") - (" + point.getX() + "," + point.getY() + ") = " + absoluteBearing + " (" + turn + ")");
+		robot.setTurnRight(VomitTools.normalizeBearing(robot.getHeading() - absoluteBearing));
+		robot.setAhead(Math.cos(absoluteBearing) * 100);
+		//System.out.println(robot.getX() + "," + robot.getY());
+	}
+	
 	void reverseDirection() {
 		direction *= -1;
 		directionGettingOld = 0;

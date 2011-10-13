@@ -16,9 +16,10 @@ public class VomitTornado extends AdvancedRobot {
 	Bot target;
 	
 	public void run() {
-		//steering = new VomitSteering(this);
-		steering = new BlueSteering(this);
-		gun = new VomitComet(this);
+		steering = new RedSteering(this);
+		gun = new RedGun(this);
+		//steering = new BlueSteering(this);
+		//gun = new VomitComet(this);
 		
 		setBodyColor(Color.black);
         setAdjustRadarForGunTurn(true);
