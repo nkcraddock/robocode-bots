@@ -30,12 +30,12 @@ public class VomitTornado extends AdvancedRobot {
 	
 	public void onScannedRobot(ScannedRobotEvent e) {
 		if(target == null) 
-			target = Bot.fromScannedRobotEvent(e);
+			target = Bot.fromScannedRobotEvent(e, this);
 		
 		if(target.name != e.getName()) 
 			return; // We don't care.
 		
-		target = Bot.fromScannedRobotEvent(e);
+		target = Bot.fromScannedRobotEvent(e, this);
 		steering.onScannedRobot(e, target);
 		gun.onScannedRobot(e, target);
 	}
