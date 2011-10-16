@@ -13,7 +13,6 @@ class VomitTools {
 		return angle;
 	}	
 	
-	// some maths shamelessly stolen from GFTargetingBot
 	static double maxEscapeAngle(double firePower) {
 		return Math.asin(8.0 / (20 - (3 * Math.min(3,firePower))));
 	}
@@ -26,7 +25,5 @@ class VomitTools {
 	static double absoluteBearing(Point2D source, Point2D target) {
 		return Math.atan2(target.getX() - source.getX(), target.getY() - source.getY());
 	}
-	
-	// Ninjad this from the wave surfing tutorial
 	
 }

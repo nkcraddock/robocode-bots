@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
 public class Draw {
-	// Draws an arc with x,y as the center instead of the bottom left like retard mode 
 	public static void arc(Graphics2D g, double x, double y, double r, double a, double length) {
 		g.drawArc((int)(x - r), (int)(y - r), (int)r*2, (int)r*2, (int)a, (int)length);
 	}
@@ -36,6 +35,9 @@ public class Draw {
 	}
 	
 	public static void line(Graphics2D g, Point2D p1, Point2D p2) {
-		g.drawLine((int)Math.round(p1.getX()), (int)Math.round(p1.getX()), (int)Math.round(p2.getY()), (int)Math.round(p2.getY()));
+		g.drawLine((int)Math.round(p1.getX()), 
+				(int)Math.round(p1.getY()), 
+				(int)Math.round(p2.getX()),
+				(int)Math.round(p2.getY()));
 	}
 }
