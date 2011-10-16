@@ -3,7 +3,6 @@ package nkc;
 import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D.Double;
 import java.util.Random;
 
 import robocode.AdvancedRobot;
@@ -34,8 +33,8 @@ public class BlueSteering implements ISteering {
 			reverseDirection();
 		
 		robot.setTurnRadarRight(VomitTools.normalizeBearing(robot.getHeading() - robot.getRadarHeading() + e.getBearing()));
-		Point2D location = new Point2D.Double(robot.getX(), robot.getY());
-		Point2D enemyLocation = VomitTools.project(location, e.getBearing(), e.getDistance());
+		//Point2D location = new Point2D.Double(robot.getX(), robot.getY());
+		//Point2D enemyLocation = VomitTools.project(location, e.getBearing(), e.getDistance());
 		//double absBearing = VomitTools.absoluteBearing(location, enemyLocation);
 		
 		//robot.setTurnRight(absBearing);

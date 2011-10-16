@@ -2,10 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/tron/robocode/libs/robocode.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/home/tron/robocode/javadoc/"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="/home/nathan/robocode/libs/robocode.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
