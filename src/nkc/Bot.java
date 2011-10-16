@@ -16,10 +16,12 @@ public class Bot {
 	public double velocity;
 	public double x;
 	public double y;
+	public double bearing;
 	
 	
 	static Bot fromScannedRobotEvent(ScannedRobotEvent e, AdvancedRobot scanner) {
 		Bot bot = new Bot();
+		bot.bearing = e.getBearing();
 		bot.energy = e.getEnergy();
 		bot.velocity = e.getVelocity();
 		bot.heading = e.getHeading();
