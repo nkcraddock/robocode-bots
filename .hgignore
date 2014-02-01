@@ -1,20 +1,44 @@
-#-----------------------------------------------------------------------
-# Add an entry for .settings folder to ignore 
-#------------------------------------------------------------------------
-syntax: regexp
-^common/\.settings$
-
-#----------------------------------------------------------------------------
-# Add an entry for target folder to ignore when creating a new module.
-# This will ignore all the class files. 
-#----------------------------------------------------------------------------
-syntax: regexp
-^common/target$
-
-#-------------------------------------
-# Use global syntax
-#-------------------------------------
+# use glob syntax
 syntax: glob
-.obj
-.exe
-bin
+
+# Ignore Visual Studio 2008 files
+*.orig
+*.sqlite
+*.db
+*.obj
+*.exe
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.scc
+*.local.xml
+*.local.xml
+*.ncrunchproject
+*.ncrunchsolution
+[Bb]in
+[Dd]ebug*/
+obj/
+[Rr]elease*/
+_ReSharper*/
+[Tt]est[Rr]esult*
+[Bb]uild[Ll]og.*
+*.[Pp]ublish.xml
+Uploads/
+App_Data/
+publish/
+[Dd]eployment/
+packages/
